@@ -1,17 +1,21 @@
 function getMessage(a,b) {
+	//Проверка выстрела
 	if ( typeof a == 'boolean' ){
-
 		if ( a ){
 			return 'Я попал в ' + b;
 		} else{
 			return 'Я никуда не попал';
 		};
 	}
-	else if ( typeof a == 'number' ){
+
+	//Проверка прыжка
+	if ( typeof a == 'number' ){
 		return 'Я прыгнул на ' + (a * 100) + ' сантиметров';
 	}
-	else if ( (typeof a == "object") && (a instanceof Array) ){
-		console.log(a);
+	
+	//Проверка достижения правого края
+	//Кажется условие сильно сложное?)
+	if ( (typeof a == "object") && (a instanceof Array) && !(typeof b == "object") && !(b instanceof Array) ){
 
 		var sum = 0;
 
@@ -19,11 +23,13 @@ function getMessage(a,b) {
 			sum += a[i];
 		};
 
-		console.log(sum);
+		return 'Я прошёл ' + sum + ' шагов';
 
-		return 'Я прошел ' + sum + ' шагов';
 	}
-	else if ( (typeof a == "object") && (a instanceof Array) && (typeof b == "object") && (b instanceof Array) ){
+	
+	//Проверка достижения левого края
+	//Тут количество элементов должно быть одинаковым
+	if ( (typeof a == "object") && (a instanceof Array) && (typeof b == "object") && (b instanceof Array) ){
 
 		var length = 0;
 
@@ -33,7 +39,6 @@ function getMessage(a,b) {
 			length += sum;
 		};
 
-		
-		return 'Я прошел ' + length + ' метров';
+		return 'Я прошёл ' + length + ' метров';
 	}
 }
