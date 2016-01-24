@@ -380,17 +380,86 @@
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          getMessage('Поздравляю! Вы выйграли! ', 150);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          getMessage('К сожалению, Вы проиграли!', 200);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          getMessage('Пауза!', 200);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          getMessage('Добро пожаловать в Code and Magick! Нажмите Пробел для старта игры.', 200);
           break;
+      }
+
+      function getMessage(messageText, messageWidth){
+
+        var words = messageText.split(' '),
+            line = '',
+            messageWindowLeft = 300,
+            messageWindowTop = 130,
+            messageWindowWidth = messageWidth + 15, //Для отступа справа
+            messageWindowHeight = 100,
+            textTop = messageWindowTop + 20,
+            textLeft = messageWindowLeft + 10;
+            
+
+        /* КОСТЫЛЬ
+        var messageWindowHeight = 0;
+        var s = '';
+
+        for (var i = 0; i < words.length; i++) {
+
+            var testLine = s + words[i] + " ";
+            var testWidth = game.ctx.measureText(testLine).width;
+
+            if (testWidth > messageWidth) {
+                s = words[i] + " ";
+                messageWindowHeight += 16;
+            }
+            else {
+                s = testLine;
+            }
+        }
+
+        messageWindowHeight += 31;
+
+        */
+        game.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        game.ctx.beginPath();
+        game.ctx.moveTo(messageWindowLeft, messageWindowTop);
+        game.ctx.lineTo(messageWindowLeft + messageWidth + 7, messageWindowTop + 7);
+        game.ctx.lineTo(messageWindowLeft + messageWidth + 7, messageWindowTop + messageWindowHeight + 7);
+        game.ctx.lineTo(messageWindowLeft - 4, messageWindowTop + messageWindowHeight + 12);
+        game.ctx.fill();
+
+        game.ctx.fillStyle = '#FFFFFF';
+        game.ctx.beginPath();
+        game.ctx.moveTo(messageWindowLeft, messageWindowTop);
+        game.ctx.lineTo(messageWindowLeft + messageWidth, messageWindowTop);
+        game.ctx.lineTo(messageWindowLeft + messageWidth, messageWindowTop + messageWindowHeight);
+        game.ctx.lineTo(messageWindowLeft - 7, messageWindowTop + messageWindowHeight + 5);
+        game.ctx.fill();
+
+        game.ctx.fillStyle = '#000000';
+        game.ctx.font = '16px "PT Mono"';
+
+        for (var i = 0; i < words.length; i++) {
+
+            var testLine = line + words[i] + " ";
+            var testWidth = game.ctx.measureText(testLine).width;
+
+            if (testWidth > messageWidth) {
+                game.ctx.fillText(line, textLeft, textTop);
+                line = words[i] + " ";
+                textTop += 16;
+            }
+            else {
+                line = testLine;
+            }
+        }
+        game.ctx.fillText(line, textLeft, textTop);
       }
     },
 
