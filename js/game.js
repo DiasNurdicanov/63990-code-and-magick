@@ -399,7 +399,7 @@
             line = '',
             messageWindowLeft = 300,
             messageWindowTop = 130,
-            messageWindowWidth = messageWidth + 15, //Для отступа справа
+            messageWindowWidth = messageWidth + 5, //Для отступа справа
             messageWindowHeight = 100,
             textTop = messageWindowTop + 20,
             textLeft = messageWindowLeft + 10;
@@ -429,16 +429,16 @@
         game.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         game.ctx.beginPath();
         game.ctx.moveTo(messageWindowLeft, messageWindowTop);
-        game.ctx.lineTo(messageWindowLeft + messageWidth + 7, messageWindowTop + 7);
-        game.ctx.lineTo(messageWindowLeft + messageWidth + 7, messageWindowTop + messageWindowHeight + 7);
+        game.ctx.lineTo(messageWindowLeft + messageWindowWidth + 7, messageWindowTop + 7);
+        game.ctx.lineTo(messageWindowLeft + messageWindowWidth + 7, messageWindowTop + messageWindowHeight + 7);
         game.ctx.lineTo(messageWindowLeft - 4, messageWindowTop + messageWindowHeight + 12);
         game.ctx.fill();
 
         game.ctx.fillStyle = '#FFFFFF';
         game.ctx.beginPath();
         game.ctx.moveTo(messageWindowLeft, messageWindowTop);
-        game.ctx.lineTo(messageWindowLeft + messageWidth, messageWindowTop);
-        game.ctx.lineTo(messageWindowLeft + messageWidth, messageWindowTop + messageWindowHeight);
+        game.ctx.lineTo(messageWindowLeft + messageWindowWidth, messageWindowTop);
+        game.ctx.lineTo(messageWindowLeft + messageWindowWidth, messageWindowTop + messageWindowHeight);
         game.ctx.lineTo(messageWindowLeft - 7, messageWindowTop + messageWindowHeight + 5);
         game.ctx.fill();
 
