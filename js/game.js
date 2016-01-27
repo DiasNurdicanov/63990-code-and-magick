@@ -400,32 +400,34 @@
             messageWindowLeft = 300,
             messageWindowTop = 130,
             messageWindowWidth = messageWidth + 5, //Для отступа справа
-            messageWindowHeight = 100,
+            messageWindowHeight = 31,
             textTop = messageWindowTop + 20,
-            textLeft = messageWindowLeft + 10;
+            textLeft = messageWindowLeft + 10,
+            lines = [],
+            body = document.querySelector('body');
             
-
-        /* КОСТЫЛЬ
-        var messageWindowHeight = 0;
-        var s = '';
 
         for (var i = 0; i < words.length; i++) {
 
-            var testLine = s + words[i] + " ";
-            var testWidth = game.ctx.measureText(testLine).width;
+            var testLine = line + words[i] + " ";
+            var element = document.createElement('span');
+                element.innerHTML = testLine;
+                body.insertBefore(element, body.firstChild);
 
-            if (testWidth > messageWidth) {
-                s = words[i] + " ";
-                messageWindowHeight += 16;
+            if (element.offsetWidth > messageWidth) {
+                lines[i] = line;
+                line = words[i] + " ";
+                messageWindowHeight += 16; // Считаем высоту поля
             }
             else {
-                s = testLine;
+                line = testLine;
             }
+
+            body.removeChild(element);
         }
 
-        messageWindowHeight += 31;
-
-        */
+        lines.push(line); //Запись в массив последней строки
+      
         game.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         game.ctx.beginPath();
         game.ctx.moveTo(messageWindowLeft, messageWindowTop);
@@ -445,21 +447,12 @@
         game.ctx.fillStyle = '#000000';
         game.ctx.font = '16px "PT Mono"';
 
-        for (var i = 0; i < words.length; i++) {
-
-            var testLine = line + words[i] + " ";
-            var testWidth = game.ctx.measureText(testLine).width;
-
-            if (testWidth > messageWidth) {
-                game.ctx.fillText(line, textLeft, textTop);
-                line = words[i] + " ";
-                textTop += 16;
-            }
-            else {
-                line = testLine;
-            }
+        for (var i = 0; i < lines.length; i++) {
+          if ( lines[i] ){
+            game.ctx.fillText(lines[i], textLeft, textTop);
+            textTop += 16;
+          }
         }
-        game.ctx.fillText(line, textLeft, textTop);
       }
     },
 
