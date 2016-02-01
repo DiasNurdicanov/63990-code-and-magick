@@ -14,30 +14,24 @@ function getMessage(a,b) {
 	}
 	
 	//Проверка достижения правого края
-	//Кажется условие сильно сложное?)
-	if ( (typeof a == "object") && (a instanceof Array) && !(typeof b == "object") && !(b instanceof Array) ){
+	if ( (Array.isArray(a)) && !(Array.isArray(b)) ){
 
-		var sum = 0;
-
-		for (var i = 0; i < a.length; i++) {
-			sum += a[i];
-		};
+		var sum = a.reduce(function(result, current) {
+		  return result + current;
+		},0);
 
 		return 'Я прошёл ' + sum + ' шагов';
-
 	}
 	
 	//Проверка достижения левого края
 	//Тут количество элементов должно быть одинаковым
-	if ( (typeof a == "object") && (a instanceof Array) && (typeof b == "object") && (b instanceof Array) ){
+	if ( Array.isArray(a) && Array.isArray(b) ){
+		var length = a.reduce(function(result, current, i) {
+		  var sum = current + b[i];
 
-		var length = 0;
+		  return result + sum;
 
-		for (var i = 0; i < a.length; i++) {
-			var sum = a[i] + b[i];
-
-			length += sum;
-		};
+		},0)
 
 		return 'Я прошёл ' + length + ' метров';
 	}
