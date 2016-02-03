@@ -21,35 +21,83 @@
   var reviewMark = reviewForm['review-mark'];
   var reviewSubmit = document.querySelector('.review-submit');
   var reviewFields =  document.querySelector('.review-fields');
-  var reviewNameLabel = reviewFields.querySelector('label[for="review-name"]');
   var reviewTextLabel = reviewFields.querySelector('label[for="review-text"]');
 
   reviewName.required = true;
   reviewTextLabel.classList.add('invisible');
   reviewSubmit.disabled = true;
+  reviewName.value = docCookies.getItem('name');
+  reviewMark.value = docCookies.getItem('mark');
 
-  reviewForm.onchange = function(){
-  	if (reviewMark.value < 3 ){
-  		reviewText.required = true;
-  		reviewTextLabel.classList.remove('invisible');
+  formIsValid(); //Начальная проверка
+
+  reviewForm.onchange = formIsValid;
+
+  function removeLink(field){
+  	var label = reviewFields.querySelector('label[for="' + field.id + '"]');
+
+  	if ( field.validity.valid ){
+  		label.classList.add('invisible');
   	}
   	else{
-  		reviewTextLabel.classList.add('invisible');
+  		label.classList.remove('invisible');
   	}
   }
 
-  function removeLink(){
-  	if ( this.required ){
-  		reviewFields.querySelector('label[for="' + this.id + '"]').classList.add('invisible')
+  function formIsValid(){
+  	var isValid = true;
+
+  	if (reviewMark.value < 3 ){
+  		reviewText.required = true;
   	}
-  	if ( reviewNameLabel.classList.contains('invisible') && reviewTextLabel.classList.contains('invisible') ){
+  	else{
+  		reviewText.required = false;
+  	}
+
+  	for (var i = 0; i < reviewForm.elements.length; i++){
+  		isValid = reviewForm.elements[i].validity.valid;
+  		if ( !isValid ) {
+  			break;
+  		}
+  	}
+
+  	if ( isValid == true ){
   		reviewFields.classList.add('invisible');
-  		reviewSubmit.disabled = false;
   	}
+  	else{
+  		reviewFields.classList.remove('invisible');
+  	}
+
+  	removeLink(reviewName);
+  	removeLink(reviewText);
+
+  	reviewSubmit.disabled = !isValid;
+
   }
 
-  reviewName.onchange = removeLink;
-  reviewText.onchange = removeLink;
+  reviewForm.onsubmit = function(e){
+  	e.preventDefault();
 
+  	var daysNum = getDays('1994-12-27');
+
+  	document.cookie = 'name=' + reviewName.value + ';expires=' + daysNum;
+  	document.cookie = 'mark=' + reviewMark.value + ';expires=' + daysNum;
+
+  }
+
+  function getDays(brithday){
+  	var nowDate = new Date();
+  	var birthdayDate = new Date(brithday);
+  	var lastBirthday = new Date( nowDate.getFullYear(), birthdayDate.getMonth(), birthdayDate.getDate() );
+
+  	if ( (nowDate - lastBirthday) < 0 ){
+  		lastBirthday = new Date( nowDate.getFullYear() - 1, birthdayDate.getMonth(), birthdayDate.getDate() )
+  	}
+
+  	var daysNum = +Date.now() + (nowDate - lastBirthday);
+  	var expiresDate = new Date(daysNum).toUTCString();
+
+  	return expiresDate;
+  }
 
 })();
