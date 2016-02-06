@@ -61,8 +61,7 @@
 
     if ( isValid ) {
       reviewFields.classList.add('invisible');
-    }
-    else {
+    } else {
       reviewFields.classList.remove('invisible');
     }
 
@@ -81,7 +80,7 @@
     document.cookie = 'name=' + reviewName.value + ';expires=' + daysNum;
     document.cookie = 'mark=' + reviewMark.value + ';expires=' + daysNum;
 
-  }
+  };
 
   function getDays(brithday) {
     var nowDate = new Date();

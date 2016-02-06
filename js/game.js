@@ -396,31 +396,29 @@
       function getMessage(messageText, messageWidth) {
 
         var words = messageText.split(' '),
-            line = '',
-            messageWindowLeft = 300,
-            messageWindowTop = 130,
-            messageWindowWidth = messageWidth + 5, //Для отступа справа
-            messageWindowHeight = 31,
-            textTop = messageWindowTop + 20,
-            textLeft = messageWindowLeft + 10,
-            lines = [],
-            body = document.querySelector('body');
-            
+          line = '',
+          messageWindowLeft = 300,
+          messageWindowTop = 130,
+          messageWindowWidth = messageWidth + 5, //Для отступа справа
+          messageWindowHeight = 31,
+          textTop = messageWindowTop + 20,
+          textLeft = messageWindowLeft + 10,
+          lines = [],
+          body = document.querySelector('body');
 
         for (var i = 0; i < words.length; i++) {
 
-            var testLine = line + words[i] + " ";
+            var testLine = line + words[i] + ' ';
             var element = document.createElement('span');
-                element.innerHTML = testLine;
-                body.insertBefore(element, body.firstChild);
+              element.innerHTML = testLine;
+              body.insertBefore(element, body.firstChild);
 
             if (element.offsetWidth > messageWidth) {
-                lines[i] = line;
-                line = words[i] + " ";
-                messageWindowHeight += 16; // Считаем высоту поля
-            }
-            else {
-                line = testLine;
+              lines[i] = line;
+              line = words[i] + ' ';
+              messageWindowHeight += 16; // Считаем высоту поля
+            } else {
+              line = testLine;
             }
 
             body.removeChild(element);
@@ -448,7 +446,7 @@
         game.ctx.font = '16px "PT Mono"';
 
         for (var i = 0; i < lines.length; i++) {
-          if ( lines[i] ){
+          if ( lines[i] ) {
             game.ctx.fillText(lines[i], textLeft, textTop);
             textTop += 16;
           }
