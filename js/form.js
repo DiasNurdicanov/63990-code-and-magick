@@ -1,3 +1,5 @@
+/* global docCookies */
+
 'use strict';
 
 (function() {
