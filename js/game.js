@@ -5,19 +5,19 @@
    * @const
    * @type {number}
    */
-   var HEIGHT = 300;
+  var HEIGHT = 300;
 
   /**
    * @const
    * @type {number}
    */
-   var WIDTH = 700;
+  var WIDTH = 700;
 
   /**
    * ID уровней.
    * @enum {number}
    */
-   var Level = {
+  var Level = {
     'INTRO': 0,
     'MOVE_LEFT': 1,
     'MOVE_RIGHT': 2,
@@ -29,21 +29,21 @@
    * Порядок прохождения уровней.
    * @type {Array.<Level>}
    */
-   var LevelSequence = [
-   Level.INTRO
-   ];
+  var LevelSequence = [
+    Level.INTRO
+  ];
 
   /**
    * Начальный уровень.
    * @type {Level}
    */
-   var INITIAL_LEVEL = LevelSequence[0];
+  var INITIAL_LEVEL = LevelSequence[0];
 
   /**
    * Допустимые виды объектов на карте.
    * @enum {number}
    */
-   var ObjectType = {
+  var ObjectType = {
     'ME': 0,
     'FIREBALL': 1
   };
@@ -52,7 +52,7 @@
    * Допустимые состояния объектов.
    * @enum {number}
    */
-   var ObjectState = {
+  var ObjectState = {
     'OK': 0,
     'DISPOSED': 1
   };
@@ -61,7 +61,7 @@
    * Коды направлений.
    * @enum {number}
    */
-   var Direction = {
+  var Direction = {
     NULL: 0,
     LEFT: 1,
     RIGHT: 2,
@@ -73,7 +73,7 @@
    * Правила перерисовки объектов в зависимости от состояния игры.
    * @type {Object.<ObjectType, function(Object, Object, number): Object>}
    */
-   var ObjectsBehaviour = {};
+  var ObjectsBehaviour = {};
 
   /**
    * Обновление движения мага. Движение мага зависит от нажатых в данный момент
@@ -83,7 +83,7 @@
    * @param {Object} state
    * @param {number} timeframe
    */
-   ObjectsBehaviour[ObjectType.ME] = function(object, state, timeframe) {
+  ObjectsBehaviour[ObjectType.ME] = function(object, state, timeframe) {
     // Пока зажата стрелка вверх, маг сначала поднимается, а потом левитирует
     // в воздухе на определенной высоте.
     // NB! Сложность заключается в том, что поведение описано в координатах
@@ -154,7 +154,7 @@
    * @param {Object} state
    * @param {number} timeframe
    */
-   ObjectsBehaviour[ObjectType.FIREBALL] = function(object, state, timeframe) {
+  ObjectsBehaviour[ObjectType.FIREBALL] = function(object, state, timeframe) {
     if (object.direction & Direction.LEFT) {
       object.x -= object.speed * timeframe;
     }
@@ -175,7 +175,7 @@
    * нужно прервать.
    * @enum {number}
    */
-   var Verdict = {
+  var Verdict = {
     'CONTINUE': 0,
     'WIN': 1,
     'FAIL': 2,
@@ -189,7 +189,7 @@
    * можно завершать или false если нет.
    * @type {Object.<Level, function(Object):boolean>}
    */
-   var LevelsRules = {};
+  var LevelsRules = {};
 
   /**
    * Уровень считается пройденным, если был выпущен файлболл и он улетел
@@ -197,7 +197,7 @@
    * @param {Object} state
    * @return {Verdict}
    */
-   LevelsRules[Level.INTRO] = function(state) {
+  LevelsRules[Level.INTRO] = function(state) {
     var fireballs = state.garbage.filter(function(object) {
       return object.type === ObjectType.FIREBALL;
     });
@@ -209,14 +209,14 @@
    * Начальные условия для уровней.
    * @enum {Object.<Level, function>}
    */
-   var LevelsInitialize = {};
+  var LevelsInitialize = {};
 
   /**
    * Первый уровень.
    * @param {Object} state
    * @return {Object}
    */
-   LevelsInitialize[Level.INTRO] = function(state) {
+  LevelsInitialize[Level.INTRO] = function(state) {
     state.objects.push(
       // Установка персонажа в начальное положение. Он стоит в крайнем левом
       // углу экрана, глядя вправо. Скорость перемещения персонажа на этом
@@ -233,7 +233,7 @@
         x: WIDTH / 3,
         y: HEIGHT - 100
       }
-      );
+    );
 
     return state;
   };
@@ -244,7 +244,7 @@
    * @param {Element} container
    * @constructor
    */
-   var Game = function(container) {
+  var Game = function(container) {
     this.container = container;
     this.canvas = document.createElement('canvas');
     this.canvas.width = container.clientWidth;
@@ -263,14 +263,14 @@
      * Текущий уровень игры.
      * @type {Level}
      */
-     level: INITIAL_LEVEL,
+    level: INITIAL_LEVEL,
 
     /**
      * Состояние игры. Описывает местоположение всех объектов на игровой карте
      * и время проведенное на уровне и в игре.
      * @return {Object}
      */
-     getInitialState: function() {
+    getInitialState: function() {
       return {
         // Статус игры. Если CONTINUE, то игра продолжается.
         currentStatus: Verdict.CONTINUE,
@@ -306,7 +306,7 @@
      * @param {Level=} level
      * @param {boolean=} restart
      */
-     initializeLevelAndStart: function(level, restart) {
+    initializeLevelAndStart: function(level, restart) {
       level = typeof level === 'undefined' ? this.level : level;
       restart = typeof restart === 'undefined' ? true : restart;
 
@@ -343,7 +343,7 @@
      * Временная остановка игры.
      * @param {Verdict=} verdict
      */
-     pauseLevel: function(verdict) {
+    pauseLevel: function(verdict) {
       if (verdict) {
         this.state.currentStatus = verdict;
       }
@@ -363,11 +363,11 @@
      * @private
      * @private
      */
-     _pauseListener: function(evt) {
+    _pauseListener: function(evt) {
       if (evt.keyCode === 32) {
         evt.preventDefault();
         var needToRestartTheGame = this.state.currentStatus === Verdict.WIN ||
-        this.state.currentStatus === Verdict.FAIL;
+            this.state.currentStatus === Verdict.FAIL;
         this.initializeLevelAndStart(this.level, needToRestartTheGame);
 
         window.removeEventListener('keydown', this._pauseListener);
@@ -377,56 +377,57 @@
     /**
      * Отрисовка экрана паузы.
      */
-     _drawPauseScreen: function() {
+    _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-        getMessage('Поздравляю! Вы выйграли! ', 150);
-        break;
+          getMessage('Поздравляю! Вы выйграли! ', 150);
+          break;
         case Verdict.FAIL:
-        getMessage('К сожалению, Вы проиграли!', 200);
-        break;
+          getMessage('К сожалению, Вы проиграли!', 200);
+          break;
         case Verdict.PAUSE:
-        getMessage('Пауза!', 200);
-        break;
+          getMessage('Пауза!', 200);
+          break;
         case Verdict.INTRO:
-        getMessage('Добро пожаловать в Code and Magick! Нажмите Пробел для старта игры.', 200);
-        break;
+          getMessage('Добро пожаловать в Code and Magick! Нажмите Пробел для старта игры.', 200);
+          break;
       }
 
       function getMessage(messageText, messageWidth) {
 
         var words = messageText.split(' '),
-          line = '',
-          messageWindowLeft = 300,
-          messageWindowTop = 130,
-          messageWindowWidth = messageWidth + 5, //Для отступа справа
-          messageWindowHeight = 31,
-          textTop = messageWindowTop + 20,
-          textLeft = messageWindowLeft + 10,
-          lines = [],
-          body = document.querySelector('body');
+            line = '',
+            messageWindowLeft = 300,
+            messageWindowTop = 130,
+            messageWindowWidth = messageWidth + 5, //Для отступа справа
+            messageWindowHeight = 31,
+            textTop = messageWindowTop + 20,
+            textLeft = messageWindowLeft + 10,
+            lines = [],
+            body = document.querySelector('body');
+            
 
         for (var i = 0; i < words.length; i++) {
 
-          var testLine = line + words[i] + ' ';
-          var element = document.createElement('span');
-          element.innerHTML = testLine;
-          body.insertBefore(element, body.firstChild);
+            var testLine = line + words[i] + " ";
+            var element = document.createElement('span');
+                element.innerHTML = testLine;
+                body.insertBefore(element, body.firstChild);
 
-          if (element.offsetWidth > messageWidth) {
-            lines[i] = line;
-            line = words[i] + ' ';
-            messageWindowHeight += 16; // Считаем высоту поля
-          }
-          else {
-            line = testLine;
-          }
+            if (element.offsetWidth > messageWidth) {
+                lines[i] = line;
+                line = words[i] + " ";
+                messageWindowHeight += 16; // Считаем высоту поля
+            }
+            else {
+                line = testLine;
+            }
 
-          body.removeChild(element);
+            body.removeChild(element);
         }
 
         lines.push(line); //Запись в массив последней строки
-
+      
         game.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         game.ctx.beginPath();
         game.ctx.moveTo(messageWindowLeft, messageWindowTop);
@@ -447,7 +448,7 @@
         game.ctx.font = '16px "PT Mono"';
 
         for (var i = 0; i < lines.length; i++) {
-          if ( lines[i] ) {
+          if ( lines[i] ){
             game.ctx.fillText(lines[i], textLeft, textTop);
             textTop += 16;
           }
@@ -460,7 +461,7 @@
      * @param {function} callback
      * @private
      */
-     _preloadImagesForLevel: function(callback) {
+    _preloadImagesForLevel: function(callback) {
       if (typeof this._imagesArePreloaded === 'undefined') {
         this._imagesArePreloaded = [];
       }
@@ -500,7 +501,7 @@
      * должны исчезнуть.
      * @param {number} delta Время, прошеднее с отрисовки прошлого кадра.
      */
-     updateObjects: function(delta) {
+    updateObjects: function(delta) {
       // Персонаж.
       var me = this.state.objects.filter(function(object) {
         return object.type === ObjectType.ME;
@@ -542,7 +543,7 @@
     /**
      * Проверка статуса текущего уровня.
      */
-     checkStatus: function() {
+    checkStatus: function() {
       // Нет нужны запускать проверку, нужно ли останавливать уровень, если
       // заранее известно, что да.
       if (this.state.currentStatus !== Verdict.CONTINUE) {
@@ -554,20 +555,20 @@
          * Проверки, не зависящие от уровня, но влияющие на его состояние.
          * @type {Array.<functions(Object):Verdict>}
          */
-         this.commonRules = [
+        this.commonRules = [
           /**
            * Если персонаж мертв, игра прекращается.
            * @param {Object} state
            * @return {Verdict}
            */
-           function checkDeath(state) {
+          function checkDeath(state) {
             var me = state.objects.filter(function(object) {
               return object.type === ObjectType.ME;
             })[0];
 
             return me.state === ObjectState.DISPOSED ?
-            Verdict.FAIL :
-            Verdict.CONTINUE;
+                Verdict.FAIL :
+                Verdict.CONTINUE;
           },
 
           /**
@@ -575,7 +576,7 @@
            * @param {Object} state
            * @return {Verdict}
            */
-           function checkKeys(state) {
+          function checkKeys(state) {
             return state.keysPressed.ESC ? Verdict.PAUSE : Verdict.CONTINUE;
           },
 
@@ -584,13 +585,13 @@
            * @param {Object} state
            * @return {Verdict}
            */
-           function checkTime(state) {
+          function checkTime(state) {
             return Date.now() - state.startTime > 3 * 60 * 1000 ?
-            Verdict.FAIL :
-            Verdict.CONTINUE;
+                Verdict.FAIL :
+                Verdict.CONTINUE;
           }
-          ];
-        }
+        ];
+      }
 
       // Проверка всех правил влияющих на уровень. Запускаем цикл проверок
       // по всем универсальным проверкам и проверкам конкретного уровня.
@@ -616,7 +617,7 @@
      * экран.
      * @param {Verdict} status
      */
-     setGameStatus: function(status) {
+    setGameStatus: function(status) {
       if (this.state.currentStatus !== status) {
         this.state.currentStatus = status;
       }
@@ -625,7 +626,7 @@
     /**
      * Отрисовка всех объектов на экране.
      */
-     render: function() {
+    render: function() {
       // Удаление всех отрисованных на странице элементов.
       this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -635,8 +636,8 @@
         if (object.sprite) {
           var image = new Image(object.width, object.height);
           image.src = (object.spriteReversed && object.direction & Direction.LEFT) ?
-          object.spriteReversed :
-          object.sprite;
+              object.spriteReversed :
+              object.sprite;
           this.ctx.drawImage(image, object.x, object.y, object.width, object.height);
         }
       }, this);
@@ -648,7 +649,7 @@
      * проверку текущего раунда. Рекурсивно продолжается до тех пор, пока
      * проверка не вернет состояние FAIL, WIN или PAUSE.
      */
-     update: function() {
+    update: function() {
       if (!this.state.lastUpdated) {
         this.state.lastUpdated = Date.now();
       }
@@ -659,20 +660,20 @@
 
       switch (this.state.currentStatus) {
         case Verdict.CONTINUE:
-        this.state.lastUpdated = Date.now();
-        this.render();
-        requestAnimationFrame(function() {
-          this.update();
-        }.bind(this));
-        break;
+          this.state.lastUpdated = Date.now();
+          this.render();
+          requestAnimationFrame(function() {
+            this.update();
+          }.bind(this));
+          break;
 
         case Verdict.WIN:
         case Verdict.FAIL:
         case Verdict.PAUSE:
         case Verdict.INTRO:
         default:
-        this.pauseLevel();
-        break;
+          this.pauseLevel();
+          break;
       }
     },
 
@@ -680,20 +681,20 @@
      * @param {KeyboardEvent} evt [description]
      * @private
      */
-     _onKeyDown: function(evt) {
+    _onKeyDown: function(evt) {
       switch (evt.keyCode) {
         case 37:
-        this.state.keysPressed.LEFT = true;
-        break;
+          this.state.keysPressed.LEFT = true;
+          break;
         case 39:
-        this.state.keysPressed.RIGHT = true;
-        break;
+          this.state.keysPressed.RIGHT = true;
+          break;
         case 38:
-        this.state.keysPressed.UP = true;
-        break;
+          this.state.keysPressed.UP = true;
+          break;
         case 27:
-        this.state.keysPressed.ESC = true;
-        break;
+          this.state.keysPressed.ESC = true;
+          break;
       }
 
       if (evt.shiftKey) {
@@ -705,20 +706,20 @@
      * @param {KeyboardEvent} evt [description]
      * @private
      */
-     _onKeyUp: function(evt) {
+    _onKeyUp: function(evt) {
       switch (evt.keyCode) {
         case 37:
-        this.state.keysPressed.LEFT = false;
-        break;
+          this.state.keysPressed.LEFT = false;
+          break;
         case 39:
-        this.state.keysPressed.RIGHT = false;
-        break;
+          this.state.keysPressed.RIGHT = false;
+          break;
         case 38:
-        this.state.keysPressed.UP = false;
-        break;
+          this.state.keysPressed.UP = false;
+          break;
         case 27:
-        this.state.keysPressed.ESC = false;
-        break;
+          this.state.keysPressed.ESC = false;
+          break;
       }
 
       if (evt.shiftKey) {
