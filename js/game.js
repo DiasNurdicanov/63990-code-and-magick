@@ -444,7 +444,7 @@
         game.ctx.fillStyle = '#000000';
         game.ctx.font = '16px "PT Mono"';
 
-        for (var j = 0; i < lines.length; j++) {
+        for (var j = 0; j < lines.length; j++) {
           if ( lines[j] ) {
             game.ctx.fillText(lines[j], textLeft, textTop);
             textTop += 16;
