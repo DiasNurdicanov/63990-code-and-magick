@@ -82,6 +82,8 @@
     document.cookie = 'name=' + reviewName.value + ';expires=' + daysNum;
     document.cookie = 'mark=' + reviewMark.value + ';expires=' + daysNum;
 
+    reviewForm.submit();
+
   };
 
   function getDays(brithday) {
