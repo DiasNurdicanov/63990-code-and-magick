@@ -2,7 +2,6 @@
 
 (function() {
 
-  var reviewsFilter = document.querySelector('.reviews-filter');
   var reviewsList = document.querySelector('.reviews-list');
   var rating = '';
   var reviews = [];
