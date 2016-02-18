@@ -7,8 +7,8 @@
   var rating = '';
   var reviews = [];
   var reviewsfiltered = [];
-
-  reviewsFilter.classList.add('invisible');
+  var activePage = 0;
+  var pageSize = 3;
 
   function createElement(data) {
     var template = document.querySelector('#review-template');
@@ -76,8 +76,8 @@
     xhr.onload = function(e) {
       var data = e.target.response;
       reviews = JSON.parse(data);
-      renderReviews(reviews);
-      reviewsfiltered = reviews.slice(0); //костыль, если сделать это в другом месте возвращает пустой массив
+      reviewsfiltered = reviews.slice(0);
+      renderReviews(reviews, 0, true);
 
       reviewsWrap.classList.remove('reviews-list-loading');
     };
@@ -91,21 +91,43 @@
 
   loadReviewList();
 
-  function renderReviews(arr) {
-    reviewsList.innerHTML = '';
-    arr.forEach(function(review) {
+  function renderReviews(arr, pageNumber, clean) {
+    if ( clean ) {
+      reviewsList.innerHTML = '';
+    }
+
+    var start = pageNumber * pageSize;
+    var end = start + pageSize;
+    var reviewsPage = arr.slice(start, end);
+
+    reviewsPage.forEach(function(review) {
       var element = createElement(review);
       reviewsList.appendChild(element);
     });
   }
 
-  reviewsFilter.classList.remove('invisible');
+  //Обработка кнопки 'Показать еще'
+  var reviewsMoreBtn = document.querySelector('.reviews-controls-more');
+
+  reviewsMoreBtn.addEventListener('click', function() {
+    if ( activePage < Math.ceil(reviewsfiltered.length / pageSize) ) {
+      renderReviews(reviewsfiltered, ++activePage, false);
+    } else {
+      reviewsMoreBtn.classList.add('invisible'); //Почему не србатывает?)
+    }
+  });
 
   //фильтры
   var filtersForm = document.querySelector('.reviews-filter');
   var filterList = filtersForm['reviews'];
 
   filtersForm.onchange = function() {
+
+    activePage = 0;
+    pageSize = 3;
+
+    reviewsfiltered = reviews.slice(0);
+
     switch ( filterList.value ) {
       case 'reviews-recent':
         // помогите с этим фильтром
@@ -134,14 +156,8 @@
           return b.review_usefulness - a.review_usefulness;
         });
         break;
-
-      case 'reviews-all':
-        reviewsfiltered = reviews.slice(0); //костыль
-        break;
     }
-    renderReviews(reviewsfiltered);
-    reviewsfiltered = reviews.slice(0); //костыль чтобы сбрасывать фальтры
+    renderReviews(reviewsfiltered, activePage, true);
   };
-
 
 })();
