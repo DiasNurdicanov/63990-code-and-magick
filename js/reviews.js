@@ -1,4 +1,4 @@
-/* global Review: true */
+/* global Review: true, Gallery: true */
 
 'use strict';
 
@@ -9,8 +9,16 @@
   var reviewsfiltered = [];
   var activePage = 0;
   var pageSize = 3;
-
+  var gallery = new Gallery();
   var reviewsWrap = document.querySelector('.reviews');
+  var photogallery = document.querySelector('.photogallery');
+
+  photogallery.addEventListener('click', function(e) {
+    if ( e.target.parentNode.classList.contains('photogallery-image') ) {
+      e.preventDefault();
+      gallery.show();
+    }
+  });
 
   function loadReviewList() {
     var XHR_TIMEOUT = 30000;
