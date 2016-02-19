@@ -10,28 +10,29 @@
 
   reviewsFilter.classList.add('invisible');
 
-  function createElement(data){
+  function createElement(data) {
     var template = document.querySelector('#review-template');
+    var element;
 
-    if ( 'content' in template ){
-      var element = template.content.childNodes[1].cloneNode(true);
-    } else{
-      var element = template.childNodes[1].cloneNode(true);
+    if ( 'content' in template ) {
+      element = template.content.childNodes[1].cloneNode(true);
+    } else {
+      element = template.childNodes[1].cloneNode(true);
     }
 
     var reviewRating = element.querySelector('.review-rating');
 
-    switch(data.rating) {
-      case 2: 
+    switch (data.rating) {
+      case 2:
         rating = 'review-rating-two';
         break;
-      case 3: 
+      case 3:
         rating = 'review-rating-three';
         break;
-      case 4: 
+      case 4:
         rating = 'review-rating-four';
         break;
-      case 5: 
+      case 5:
         rating = 'review-rating-five';
         break;
     }
@@ -42,27 +43,27 @@
     var authorAvatar = new Image();
     var reviewImg = element.querySelector('.review-author');
 
-    authorAvatar.onload = function(){
+    authorAvatar.onload = function() {
       element.replaceChild(authorAvatar, reviewImg);
       authorAvatar.classList.add('review-author');
-      authorAvatar.width = "124";
-      authorAvatar.height = "124";
+      authorAvatar.width = '124';
+      authorAvatar.height = '124';
       authorAvatar.title = data.author.name;
-    }
+    };
 
-    authorAvatar.onerror = function(){
+    authorAvatar.onerror = function() {
       element.classList.add('review-load-failure');
-    }
+    };
 
     authorAvatar.src = data.author.picture;
 
     return element;
   }
 
-  reviews.forEach(function(review){
+  reviews.forEach(function(review) {
     var element = createElement(review);
     reviewsList.appendChild(element);
-  })
+  });
 
   reviewsFilter.classList.remove('invisible');
 
