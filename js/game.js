@@ -756,7 +756,7 @@
     var coord = clouds.getBoundingClientRect();
 
     if ( parallaxToggle ) {
-      clouds.style.backgroundPositionX = coord.top + 'px';
+      clouds.style.backgroundPosition = coord.top + 'px 0px';
     }
 
     clearTimeout(parallaxTimeout);
