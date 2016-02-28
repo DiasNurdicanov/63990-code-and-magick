@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+define([], function() {
   /**
    * @const
    * @type {number}
@@ -775,4 +775,4 @@
       }
     }, 100);
   }
-})();
+});

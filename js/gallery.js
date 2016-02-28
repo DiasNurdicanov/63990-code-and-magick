@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+define([], function() {
 
   function Gallery() {
     this.element = document.querySelector('.overlay-gallery');
@@ -94,6 +94,5 @@
     }
   };
 
-  window.Gallery = Gallery;
-
-})();
+  return Gallery;
+});
