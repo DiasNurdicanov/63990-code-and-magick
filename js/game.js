@@ -380,17 +380,76 @@
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          getMessage('Поздравляю! Вы выйграли! ', 150);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          getMessage('К сожалению, Вы проиграли!', 200);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          getMessage('Пауза!', 200);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          getMessage('Добро пожаловать в Code and Magick! Нажмите Пробел для старта игры.', 200);
           break;
+      }
+
+      function getMessage(messageText, messageWidth) {
+
+        var words = messageText.split(' '),
+          line = '',
+          messageWindowLeft = 300,
+          messageWindowTop = 130,
+          messageWindowWidth = messageWidth + 5, //Для отступа справа
+          messageWindowHeight = 31,
+          textTop = messageWindowTop + 20,
+          textLeft = messageWindowLeft + 10,
+          lines = [],
+          body = document.querySelector('body');
+
+        for (var i = 0; i < words.length; i++) {
+
+          var testLine = line + words[i] + ' ';
+          var element = document.createElement('span');
+          element.innerHTML = testLine;
+          body.insertBefore(element, body.firstChild);
+
+          if (element.offsetWidth > messageWidth) {
+            lines[i] = line;
+            line = words[i] + ' ';
+            messageWindowHeight += 16; // Считаем высоту поля
+          } else {
+            line = testLine;
+          }
+
+          body.removeChild(element);
+        }
+
+        lines.push(line); //Запись в массив последней строки
+        game.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        game.ctx.beginPath();
+        game.ctx.moveTo(messageWindowLeft, messageWindowTop);
+        game.ctx.lineTo(messageWindowLeft + messageWindowWidth + 7, messageWindowTop + 7);
+        game.ctx.lineTo(messageWindowLeft + messageWindowWidth + 7, messageWindowTop + messageWindowHeight + 7);
+        game.ctx.lineTo(messageWindowLeft - 4, messageWindowTop + messageWindowHeight + 12);
+        game.ctx.fill();
+
+        game.ctx.fillStyle = '#FFFFFF';
+        game.ctx.beginPath();
+        game.ctx.moveTo(messageWindowLeft, messageWindowTop);
+        game.ctx.lineTo(messageWindowLeft + messageWindowWidth, messageWindowTop);
+        game.ctx.lineTo(messageWindowLeft + messageWindowWidth, messageWindowTop + messageWindowHeight);
+        game.ctx.lineTo(messageWindowLeft - 7, messageWindowTop + messageWindowHeight + 5);
+        game.ctx.fill();
+
+        game.ctx.fillStyle = '#000000';
+        game.ctx.font = '16px "PT Mono"';
+
+        for (var j = 0; j < lines.length; j++) {
+          if ( lines[j] ) {
+            game.ctx.fillText(lines[j], textLeft, textTop);
+            textTop += 16;
+          }
+        }
       }
     },
 
@@ -684,4 +743,36 @@
   var game = new Game(document.querySelector('.demo'));
   game.initializeLevelAndStart();
   game.setGameStatus(window.Game.Verdict.INTRO);
+
+  //Парралакс
+  var parallaxTimeout;
+  var clouds = document.querySelector('.header-clouds');
+  var demo = document.querySelector('.demo');
+  var parallaxToggle = true;
+
+  window.addEventListener('scroll', parallax);
+
+  function parallax() {
+    var coord = clouds.getBoundingClientRect();
+
+    if ( parallaxToggle ) {
+      clouds.style.backgroundPosition = coord.top + 'px 0px';
+    }
+
+    clearTimeout(parallaxTimeout);
+
+    var Y = coord.top + window.innerHeight + 60;
+
+    parallaxTimeout = setTimeout(function() {
+      if ( Y >= coord.height ) {
+        parallaxToggle = true;
+      } else {
+        parallaxToggle = false;
+      }
+
+      if ( Y + demo.offsetHeight <= coord.height) {
+        game.setGameStatus(window.Game.Verdict.PAUSE);
+      }
+    }, 100);
+  }
 })();
