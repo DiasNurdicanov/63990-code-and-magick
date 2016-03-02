@@ -80,6 +80,8 @@
 
     reviewForm.submit();
 
+    reviewForm.submit();
+
   };
 
   function getDays(brithday) {

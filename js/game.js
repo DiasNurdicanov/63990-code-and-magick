@@ -743,4 +743,36 @@
   var game = new Game(document.querySelector('.demo'));
   game.initializeLevelAndStart();
   game.setGameStatus(window.Game.Verdict.INTRO);
+
+  //Парралакс
+  var parallaxTimeout;
+  var clouds = document.querySelector('.header-clouds');
+  var demo = document.querySelector('.demo');
+  var parallaxToggle = true;
+
+  window.addEventListener('scroll', parallax);
+
+  function parallax() {
+    var coord = clouds.getBoundingClientRect();
+
+    if ( parallaxToggle ) {
+      clouds.style.backgroundPosition = coord.top + 'px 0px';
+    }
+
+    clearTimeout(parallaxTimeout);
+
+    var Y = coord.top + window.innerHeight + 60;
+
+    parallaxTimeout = setTimeout(function() {
+      if ( Y >= coord.height ) {
+        parallaxToggle = true;
+      } else {
+        parallaxToggle = false;
+      }
+
+      if ( Y + demo.offsetHeight <= coord.height) {
+        game.setGameStatus(window.Game.Verdict.PAUSE);
+      }
+    }, 100);
+  }
 })();

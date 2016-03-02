@@ -48,7 +48,7 @@
     <div class="reviews-list"></div>
 
     <div class="reviews-controls">
-      <span class="reviews-controls-item reviews-controls-more invisible">Ещё отзывы</span>
+      <span class="reviews-controls-item reviews-controls-more">Ещё отзывы</span>
       <span class="reviews-controls-item reviews-controls-new">+ Добавить свой</span>
     </div>
   </section>
@@ -119,18 +119,12 @@
   </article>
 </template>
 
-<script>
-  var reviews = [];
-  function __reviewsLoadCallback(data) {
-    reviews = data;
-    console.log(reviews)
-  }
-</script>
-<script src="//up.htmlacademy.ru/assets/js_intensive/jsonp/reviews.js"></script>
-<script src="js/reviews.js"></script>
 <script src="lib/cookies.js"></script>
-<script src="js/form.js"></script>
+<script src="js/gallery.js"></script>
 <script src="js/game.js"></script>
+<script src="js/reviews.js"></script>
+<script src="js/form.js"></script>
+<script src="js/review.js"></script>
 
 </body>
 </html>
