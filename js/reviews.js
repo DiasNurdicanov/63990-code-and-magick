@@ -1,4 +1,4 @@
-/* global Review: true, Gallery: true */
+/* global Review: true */
 
 'use strict';
 
@@ -6,26 +6,17 @@
 
   var reviewsList = document.querySelector('.reviews-list');
   var reviewsWrap = document.querySelector('.reviews');
-  var photogallery = document.querySelector('.photogallery');
   var reviewsMoreBtn = document.querySelector('.reviews-controls-more');
   var filtersForm = document.querySelector('.reviews-filter');
   var filterList = filtersForm['reviews'];
 
   var reviews = [];
   var filteredReviews = [];
-  var gallery = new Gallery();
   var pagesCount = 0;
 
   var XHR_TIMEOUT = 30000;
   var ACTIVE_PAGE = 0;
   var PAGE_SIZE = 3;
-
-  photogallery.addEventListener('click', function(e) {
-    if ( e.target.parentNode.classList.contains('photogallery-image') ) {
-      e.preventDefault();
-      gallery.show();
-    }
-  });
 
   function loadReviewList() {
     var xhr = new XMLHttpRequest();
