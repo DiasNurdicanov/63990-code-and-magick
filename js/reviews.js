@@ -13,9 +13,17 @@ define([
   var reviews = [];
   var filteredReviews = [];
   var pagesCount = 0;
+  var activePage = 0;
+  var activeFilter = localStorage.getItem('activeFilter') || 'reviews-all';
 
+  /**
+   * @const {number}
+   */
   var XHR_TIMEOUT = 30000;
-  var ACTIVE_PAGE = 0;
+
+  /**
+   * @const {number}
+   */
   var PAGE_SIZE = 3;
 
   function loadReviewList() {
@@ -28,9 +36,7 @@ define([
     xhr.onload = function(e) {
       var data = e.target.response;
       reviews = JSON.parse(data);
-      filteredReviews = reviews.slice(0);
-      renderReviews(reviews, 0, true);
-
+      reviewsFilter(activeFilter);
       reviewsWrap.classList.remove('reviews-list-loading');
     };
 
@@ -71,6 +77,12 @@ define([
 
   loadReviewList();
 
+  /**
+   * Функция отрисовывает постанично массив.
+   * @param {Array.} arr
+   * @param {number} pageNumber
+   * @param {boolean} clean
+   */
   function renderReviews(arr, pageNumber, clean) {
     if ( clean ) {
       var renderedReviews = reviewsList.querySelectorAll('.review');
@@ -97,17 +109,24 @@ define([
 
     pagesCount = Math.ceil(filteredReviews.length / PAGE_SIZE);
 
-    if (ACTIVE_PAGE < pagesCount) {
-      renderReviews(filteredReviews, ++ACTIVE_PAGE, false);
+    if (activePage < pagesCount) {
+      renderReviews(filteredReviews, ++activePage, false);
     }
 
-    if ( ACTIVE_PAGE + 1 === pagesCount) {
+    if ( activePage + 1 === pagesCount) {
       reviewsMoreBtn.classList.add('invisible');
     }
 
   });
 
-  //фильтры
+  /**
+   * Функция выполняет сортировку коллекции элементов.
+   * Сортировка может быть выполнена по произвольному свойству
+   * объекта и в определенном направлении (asc, desc)
+   * @param {Array.} items
+   * @param {string} property
+   * @param {string} sortType
+   */
   function sortItems(items, property, sortType) {
 
     switch (sortType) {
@@ -142,14 +161,22 @@ define([
 
   }
 
-  filtersForm.onchange = function() {
+  /**
+   * Фильтрация массива.
+   * @param {number} filterId
+   */
+  function reviewsFilter(filterId) {
+
+    if (filterList.value !== filterId) {
+      filterList.value = filterId;
+    }
 
     filteredReviews = reviews.slice(0);
 
-    ACTIVE_PAGE = 0;
+    activePage = 0;
     reviewsMoreBtn.classList.remove('invisible');
 
-    switch ( filterList.value ) {
+    switch ( filterId ) {
       case 'reviews-recent':
         var today = new Date('2016-01-31'); //для проверки
         var halfYear = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 14); //14-2 недели
@@ -187,17 +214,21 @@ define([
 
       default:
         filteredReviews = reviews.slice(0);
-
     }
 
-    renderReviews(filteredReviews, ACTIVE_PAGE, true);
+    renderReviews(filteredReviews, activePage, true);
 
     pagesCount = Math.ceil(filteredReviews.length / PAGE_SIZE);
 
     if (pagesCount === 1) {
       reviewsMoreBtn.classList.add('invisible');
     }
+  }
 
+  filtersForm.onchange = function() {
+    activeFilter = filterList.value;
+    reviewsFilter(activeFilter);
+    localStorage.setItem('activeFilter', activeFilter);
   };
 
 });

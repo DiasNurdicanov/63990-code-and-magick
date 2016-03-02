@@ -35,6 +35,11 @@ define([], function() {
 
   reviewForm.onchange = formIsValid;
 
+  /**
+   * Функция проверяет валидность переданного поля,
+   * и скрывает label для этого поля если не валидно
+   * @param {HTMLElement} field
+   */
   function removeLink(field) {
     var label = reviewFields.querySelector('label[for="' + field.id + '"]');
 
@@ -45,6 +50,7 @@ define([], function() {
     }
   }
 
+  //Функция проверяет валидность формы
   function formIsValid() {
     var isValid = true;
 
@@ -80,10 +86,13 @@ define([], function() {
 
     reviewForm.submit();
 
-    reviewForm.submit();
-
   };
 
+  /**
+   * Функция возвращает кол-во дней прошедших с переданной даты
+   * @param {string} brithday
+   * @return {Date} expiresDate
+   */
   function getDays(brithday) {
     var nowDate = new Date();
     var birthdayDate = new Date(brithday);
