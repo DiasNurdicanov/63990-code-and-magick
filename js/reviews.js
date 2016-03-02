@@ -1,8 +1,8 @@
-/* global Review: true */
-
 'use strict';
 
-(function() {
+define([
+  'review'
+], function(Review) {
 
   var reviewsList = document.querySelector('.reviews-list');
   var reviewsWrap = document.querySelector('.reviews');
@@ -200,4 +200,4 @@
 
   };
 
-})();
+});

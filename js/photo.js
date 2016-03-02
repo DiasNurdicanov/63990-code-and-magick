@@ -1,11 +1,10 @@
 'use strict';
 
-(function() {
+define([], function() {
 
   function Photo(src) {
     this.src = src;
   }
 
-  window.Photo = Photo;
-
-})();
+  return Photo;
+});

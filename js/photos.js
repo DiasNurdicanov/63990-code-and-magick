@@ -1,8 +1,9 @@
-/* global Photo: true, Gallery: true  */
-
 'use strict';
 
-(function() {
+define([
+  'photo',
+  'gallery'
+], function(Photo, Gallery) {
 
   var photogalleryItems = document.querySelectorAll('.photogallery-image');
   var photogalleryImages = document.querySelectorAll('.photogallery-image img');
@@ -21,5 +22,4 @@
     });
   });
 
-
-})();
+});

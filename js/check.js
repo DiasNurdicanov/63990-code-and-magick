@@ -26,6 +26,7 @@ function getMessage(a,b) {
 	//Проверка достижения левого края
 	//Тут количество элементов должно быть одинаковым
 	if ( Array.isArray(a) && Array.isArray(b) ){
+
 		var length = a.reduce(function(result, current, i) {
 		  var sum = current + b[i];
 
