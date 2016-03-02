@@ -27,12 +27,15 @@ define([], function() {
   };
 
   Gallery.prototype.hide = function() {
+
     this.element.classList.add('invisible');
 
     this._closeButton.removeEventListener('click', this._onCloseClick);
     this._leftButton.removeEventListener('click', this._onLeftClick);
     this._rightButton.removeEventListener('click', this._onRightClick);
     document.removeEventListener('keydown', this._onDocumentKeyDown);
+
+    history.pushState(null, null, '/');
   };
 
   Gallery.prototype._onCloseClick = function() {
@@ -65,7 +68,18 @@ define([], function() {
   };
 
   Gallery.prototype.setCurrentPicture = function(i) {
-    this.activePhotoNum = i;
+
+    if (typeof i === 'string') {
+      for (var j = 0; j < this.totalCount; j++) {
+        if (this.photos[j].src === i) {
+          this.activePhotoNum = j;
+        }
+      }
+    }
+
+    if (typeof i === 'number') {
+      this.activePhotoNum = i;
+    }
 
     var oldPhoto = this._preview.querySelector('img');
 
@@ -78,19 +92,20 @@ define([], function() {
     photo.width = 500;
 
     this._preview.appendChild(photo);
-    this._previewNumCurrent.innerHTML = i + 1;
+    this._previewNumCurrent.innerHTML = this.activePhotoNum + 1;
     this._previewNumTotal.innerHTML = this.totalCount;
+    
   };
 
   Gallery.prototype.prevImage = function() {
     if (this.activePhotoNum > 0) {
-      this.setCurrentPicture(this.activePhotoNum - 1);
+      location.hash = 'photo/' + this.photos[this.activePhotoNum - 1].src;
     }
   };
 
   Gallery.prototype.nextImage = function() {
     if (this.activePhotoNum + 1 < this.totalCount) {
-      this.setCurrentPicture(this.activePhotoNum + 1);
+      location.hash = 'photo/' + this.photos[this.activePhotoNum + 1].src;
     }
   };
 
