@@ -13,14 +13,14 @@ define([
   var gallery = new Gallery();
   gallery.setPictures(photosArray);
 
-  [].forEach.call(photogalleryImages, function(photo, i) {
+  [].forEach.call(photogalleryImages, function(photo) {
     photo.addEventListener('click', function(e) {
       e.preventDefault();
       location.hash = 'photo/' + this.getAttribute('src');
     });
   });
 
-  function onHashChange () {
+  function onHashChange() {
     var newHash = location.hash;
     var re = /#photo\/(\S+)/;
 
@@ -30,8 +30,7 @@ define([
 
     if (location.hash.indexOf('photo') !== -1) {
       gallery.show();
-    }
-    else{
+    } else {
       gallery.hide();
     }
   }

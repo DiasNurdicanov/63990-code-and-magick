@@ -94,7 +94,7 @@ define([], function() {
     this._preview.appendChild(photo);
     this._previewNumCurrent.innerHTML = this.activePhotoNum + 1;
     this._previewNumTotal.innerHTML = this.totalCount;
-    
+
   };
 
   Gallery.prototype.prevImage = function() {
