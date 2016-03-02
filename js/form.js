@@ -38,7 +38,7 @@ define([], function() {
   function removeLink(field) {
     var label = reviewFields.querySelector('label[for="' + field.id + '"]');
 
-    if ( field.validity.valid ) {
+    if (field.validity.valid) {
       label.classList.add('invisible');
     } else {
       label.classList.remove('invisible');
@@ -48,20 +48,16 @@ define([], function() {
   function formIsValid() {
     var isValid = true;
 
-    if (reviewMark.value < 3 ) {
-      reviewText.required = true;
-    } else {
-      reviewText.required = false;
-    }
+    reviewText.required = reviewMark.value < 3;
 
     for (var i = 0; i < reviewForm.elements.length; i++) {
       isValid = reviewForm.elements[i].validity.valid;
-      if ( !isValid ) {
+      if (!isValid) {
         break;
       }
     }
 
-    if ( isValid ) {
+    if (isValid) {
       reviewFields.classList.add('invisible');
     } else {
       reviewFields.classList.remove('invisible');
@@ -79,8 +75,10 @@ define([], function() {
 
     var daysNum = getDays('1994-12-27');
 
-    document.cookie = 'name=' + reviewName.value + ';expires=' + daysNum;
-    document.cookie = 'mark=' + reviewMark.value + ';expires=' + daysNum;
+    docCookies.setItem('name', reviewName.value, daysNum);
+    docCookies.setItem('mark', reviewMark.value, daysNum);
+
+    reviewForm.submit();
 
     reviewForm.submit();
 
@@ -91,7 +89,7 @@ define([], function() {
     var birthdayDate = new Date(brithday);
     var lastBirthday = new Date( nowDate.getFullYear(), birthdayDate.getMonth(), birthdayDate.getDate() );
 
-    if ( (nowDate - lastBirthday) < 0 ) {
+    if ((nowDate - lastBirthday) < 0) {
       lastBirthday = new Date( nowDate.getFullYear() - 1, birthdayDate.getMonth(), birthdayDate.getDate() );
     }
 
