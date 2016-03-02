@@ -4,6 +4,7 @@
 
   window.inherit = function(child, parent) {
 
+    /** * @constructor */
     function EmpteCtor() {} //Тут должно быть или не нужно каждый раз обьявлять и вынести за метод?
 
     EmpteCtor.prototype = parent.prototype;

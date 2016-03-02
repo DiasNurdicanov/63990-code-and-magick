@@ -2,6 +2,9 @@
 
 define([], function() {
 
+  /**
+   * @constructor
+   */
   function Gallery() {
     this.element = document.querySelector('.overlay-gallery');
     this._closeButton = this.element.querySelector('.overlay-gallery-close');
@@ -27,19 +30,16 @@ define([], function() {
   };
 
   Gallery.prototype.hide = function() {
-
     this.element.classList.add('invisible');
 
     this._closeButton.removeEventListener('click', this._onCloseClick);
     this._leftButton.removeEventListener('click', this._onLeftClick);
     this._rightButton.removeEventListener('click', this._onRightClick);
     document.removeEventListener('keydown', this._onDocumentKeyDown);
-
-    history.pushState(null, null, '/');
   };
 
   Gallery.prototype._onCloseClick = function() {
-    this.hide();
+    location.hash = '';
   };
 
   Gallery.prototype._onLeftClick = function() {
@@ -62,11 +62,17 @@ define([], function() {
     }
   };
 
+  /**
+   * @param {Array.<Object>} Photo
+   */
   Gallery.prototype.setPictures = function(photos) {
     this.photos = photos;
     this.totalCount = this.photos.length;
   };
 
+  /**
+   * @param {number || string} i
+   */
   Gallery.prototype.setCurrentPicture = function(i) {
 
     if (typeof i === 'string') {
