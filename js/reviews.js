@@ -16,7 +16,14 @@ define([
   var activePage = 0;
   var activeFilter = localStorage.getItem('activeFilter') || 'reviews-all';
 
+  /**
+   * @const {number}
+   */
   var XHR_TIMEOUT = 30000;
+
+  /**
+   * @const {number}
+   */
   var PAGE_SIZE = 3;
 
   function loadReviewList() {
@@ -70,6 +77,12 @@ define([
 
   loadReviewList();
 
+  /**
+   * Функция отрисовывает постанично массив.
+   * @param {Array.} arr
+   * @param {number} pageNumber
+   * @param {boolean} clean
+   */
   function renderReviews(arr, pageNumber, clean) {
     if ( clean ) {
       var renderedReviews = reviewsList.querySelectorAll('.review');
@@ -106,7 +119,14 @@ define([
 
   });
 
-  //фильтры
+  /**
+   * Функция выполняет сортировку коллекции элементов.
+   * Сортировка может быть выполнена по произвольному свойству
+   * объекта и в определенном направлении (asc, desc)
+   * @param {Array.} items
+   * @param {string} property
+   * @param {string} sortType
+   */
   function sortItems(items, property, sortType) {
 
     switch (sortType) {
@@ -141,6 +161,10 @@ define([
 
   }
 
+  /**
+   * Фильтрация массива.
+   * @param {number} filterId
+   */
   function reviewsFilter(filterId) {
 
     if (filterList.value !== filterId) {

@@ -2,6 +2,9 @@
 
 define([], function() {
 
+  /**
+   * @param {Object} data
+   */
   function Review(data) {
     this._data = data;
   }

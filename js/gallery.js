@@ -2,6 +2,9 @@
 
 define([], function() {
 
+  /**
+   * @constructor
+   */
   function Gallery() {
     this.element = document.querySelector('.overlay-gallery');
     this._closeButton = this.element.querySelector('.overlay-gallery-close');
@@ -62,11 +65,17 @@ define([], function() {
     }
   };
 
+  /**
+   * @param {Array.<Object>} Photo
+   */
   Gallery.prototype.setPictures = function(photos) {
     this.photos = photos;
     this.totalCount = this.photos.length;
   };
 
+  /**
+   * @param {number || string} i
+   */
   Gallery.prototype.setCurrentPicture = function(i) {
 
     if (typeof i === 'string') {
